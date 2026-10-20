@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500">
+  <rect width="400" height="500" fill="#F3EADF"/>
+  <g fill="none" stroke="#B8745B" stroke-width="5" opacity="0.55">
+    <circle cx="200" cy="196" r="34"/>
+    <circle cx="254" cy="236" r="34"/>
+    <circle cx="233" cy="303" r="34"/>
+    <circle cx="167" cy="303" r="34"/>
+    <circle cx="146" cy="236" r="34"/>
+    <circle cx="200" cy="250" r="20"/>
+  </g>
+  <text x="200" y="400" text-anchor="middle" font-family="Georgia, serif" font-size="22" fill="#806D5D">bless to art.</text>
+</svg>

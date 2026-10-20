@@ -1,0 +1,250 @@
+{
+  "project_name": "Bless to Art",
+  "brand_tagline": "Little things, made with love.",
+  "instagram_handle": "@bless_to_art",
+  "instagram_url": "https://www.instagram.com/bless_to_art/",
+  "archetype": "ORGANIC & EARTHY / EDITORIAL ARTISANAL STUDIO",
+  "theme": "Warm Ivory Light Theme",
+  "typography": {
+    "heading_font": "Playfair Display, Cormorant Garamond, serif",
+    "body_font": "Plus Jakarta Sans, Inter, sans-serif",
+    "mono_font": "JetBrains Mono, monospace",
+    "font_family_import_url": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap",
+    "hierarchy": {
+      "wordmark": "font-serif text-2xl md:text-3xl tracking-tight font-medium text-[#392E28]",
+      "hero_h1": "font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light text-[#392E28] leading-[1.08] tracking-tight",
+      "section_h2": "font-serif text-2xl sm:text-3xl lg:text-4xl font-normal text-[#392E28] tracking-tight",
+      "subsection_h3": "font-serif text-xl sm:text-2xl font-normal text-[#392E28]",
+      "card_h4": "font-sans text-base sm:text-lg font-semibold text-[#392E28]",
+      "eyebrow_label": "font-sans text-xs uppercase tracking-[0.2em] font-medium text-[#B8745B]",
+      "body": "font-sans text-sm sm:text-base font-normal text-[#806D5D] leading-relaxed",
+      "price_tag": "font-serif text-lg sm:text-xl font-medium text-[#392E28]",
+      "badge": "font-sans text-xs font-medium px-2.5 py-1 rounded-full bg-[#E8CFC5]/50 text-[#392E28]"
+    }
+  },
+  "colors": {
+    "background_main": "#FBF7F0",
+    "surface_cream": "#F3EADF",
+    "surface_white": "#FFFFFF",
+    "accent_terracotta": "#B8745B",
+    "accent_blush": "#E8CFC5",
+    "text_dark_charcoal": "#392E28",
+    "text_warm_taupe": "#806D5D",
+    "border_subtle": "#E3D5C7",
+    "border_focus": "#B8745B",
+    "overlay_backdrop": "rgba(57, 46, 40, 0.4)",
+    "tailwind_palette_map": {
+      "bg-primary": "bg-[#FBF7F0]",
+      "bg-surface": "bg-[#F3EADF]",
+      "bg-card": "bg-white",
+      "bg-terracotta": "bg-[#B8745B]",
+      "bg-blush": "bg-[#E8CFC5]",
+      "text-charcoal": "text-[#392E28]",
+      "text-taupe": "text-[#806D5D]",
+      "border-warm": "border-[#E3D5C7]"
+    }
+  },
+  "spacing_and_layout": {
+    "container_padding": "px-4 sm:px-8 lg:px-16 max-w-7xl mx-auto",
+    "section_gap": "py-16 sm:py-24 lg:py-32",
+    "card_padding": "p-6 sm:p-8",
+    "border_radius": {
+      "card": "rounded-2xl",
+      "button": "rounded-full",
+      "badge": "rounded-full",
+      "input": "rounded-xl",
+      "container": "rounded-3xl"
+    },
+    "grid_modes": {
+      "bento_hero": "grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-stretch",
+      "featured_products": "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8",
+      "collections_grid": "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6",
+      "admin_dashboard": "grid grid-cols-1 lg:grid-cols-12 gap-8"
+    }
+  },
+  "visual_enhancers": {
+    "glassmorphism": "backdrop-blur-md bg-[#FBF7F0]/85 border border-[#E3D5C7]/60 shadow-sm",
+    "shadows": {
+      "soft_elevation": "shadow-[0_10px_30px_-15px_rgba(57,46,40,0.08)]",
+      "hover_elevation": "shadow-[0_20px_40px_-15px_rgba(57,46,40,0.12)]",
+      "inset_craft": "shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+    },
+    "textures": {
+      "noise_overlay": "opacity-30 mix-blend-overlay pointer-events-none absolute inset-0 bg-[radial-gradient(#392E28_1px,transparent_1px)] [background-size:16px_16px]",
+      "linen_border": "border border-[#E3D5C7]"
+    }
+  },
+  "motion": {
+    "smooth_scroll": "Lenis smooth momentum scrolling initialized globally on main container",
+    "hero_masked_reveal": "Framer Motion line-by-line staggered reveal with Y-offset transition (y: '100%' -> 0, duration: 0.8s, ease: [0.16, 1, 0.3, 1])",
+    "slow_marquee": "Continuous slow motion ribbon moving at 25s loop speed with warm neutral tone and soft serif typography",
+    "staggered_cards": "AnimatePresence and motion.div with staggered children (staggerChildren: 0.1s)",
+    "micro_interactions": "Subtle image scale on hover (scale: 1.04, duration: 0.5s ease), button lift (-translate-y-0.5), smooth drawer slider"
+  },
+  "media": {
+    "hero_lifestyle": {
+      "url": "https://images.unsplash.com/photo-1603905179139-db12ab535ca9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwxfHxoYW5kbWFkZSUyMHNveSUyMGNhbmRsZSUyMGFlc3RoZXRpYyUyMG5hdHVyYWwlMjBsaWdodCUyMHN0dWRpb3xlbnwwfHx8fDE3OTI1MTkyNDJ8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Handcrafted soy candles in ceramic bowls on warm wooden studio surface with natural sunlight"
+    },
+    "brand_story_lifestyle": {
+      "url": "https://images.pexels.com/photos/9736672/pexels-photo-9736672.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Artisan craftsperson in cozy studio creating handmade gifts surrounded by natural art supplies"
+    },
+    "collections": [
+      {
+        "id": "candles",
+        "title": "Handmade Soy Candles",
+        "tagline": "Aromatic soy wax hand-poured in earthy stoneware",
+        "image_url": "https://images.pexels.com/photos/6634662/pexels-photo-6634662.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      },
+      {
+        "id": "keychains",
+        "title": "Botanical Resin Keychains",
+        "tagline": "Real pressed blooms suspended in crystal resin",
+        "image_url": "https://images.unsplash.com/photo-1725826474457-d4dc3d6d8abf?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHxfHxoYW5kbWFkZSUyMHJlc2luJTIwa2V5Y2hhaW4lMjBqZXdlbHJ5JTIwYWVzdGhldGljJTIwY3JhZnR8ZW58MHx8fHwxNzkyNTE5MjQyfDA&ixlib=rb-4.1.0&q=85"
+      },
+      {
+        "id": "art-prints",
+        "title": "Minimal Art Prints",
+        "tagline": "Serene line-art & organic botanical wall prints",
+        "image_url": "https://images.pexels.com/photos/1871809/pexels-photo-1871809.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      },
+      {
+        "id": "jewellery",
+        "title": "Handcrafted Jewellery",
+        "tagline": "Delicate handmade floral resin pendants & gold touches",
+        "image_url": "https://images.pexels.com/photos/1377179/pexels-photo-1377179.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      }
+    ],
+    "products": [
+      {
+        "id": "prod-1",
+        "name": "Vanilla Warmth Soy Candle",
+        "category": "candles",
+        "price": 890,
+        "description": "Hand-poured 100% soy candle infused with French vanilla, oakwood, and warm cinnamon notes. Encased in reusable ceramic jar.",
+        "image_url": "https://images.pexels.com/photos/6634662/pexels-photo-6634662.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "featured": true,
+        "stock": 14,
+        "availability": true
+      },
+      {
+        "id": "prod-2",
+        "name": "Amber & Cedar Twilight Candle",
+        "category": "candles",
+        "price": 950,
+        "description": "Soothing cedarwood, golden amber, and subtle cardamom notes. Burn time ~45 hours.",
+        "image_url": "https://images.unsplash.com/photo-1603905179139-db12ab535ca9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHwxfHxoYW5kbWFkZSUyMHNveSUyMGNhbmRsZSUyMGFlc3RoZXRpYyUyMG5hdHVyYWwlMjBsaWdodCUyMHN0dWRpb3xlbnwwfHx8fDE3OTI1MTkyNDJ8MA&ixlib=rb-4.1.0&q=85",
+        "featured": true,
+        "stock": 8,
+        "availability": true
+      },
+      {
+        "id": "prod-3",
+        "name": "French Lavender Meadow Candle",
+        "category": "candles",
+        "price": 850,
+        "description": "Calming dried lavender buds nestled in organic soy wax for quiet evening relaxation.",
+        "image_url": "https://images.unsplash.com/photo-1618324359017-5452b2f4eec9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxOTF8MHwxfHNlYXJjaHszfHxoYW5kbWFkZSUyMHNveSUyMGNhbmRsZSUyMGFlc3RoZXRpYyUyMG5hdHVyYWwlMjBsaWdodCUyMHN0dWRpb3xlbnwwfHx8fDE3OTI1MTkyNDJ8MA&ixlib=rb-4.1.0&q=85",
+        "featured": false,
+        "stock": 20,
+        "availability": true
+      },
+      {
+        "id": "prod-4",
+        "name": "Pressed Daisy Resin Keychain",
+        "category": "keychains",
+        "price": 420,
+        "description": "Real wild white daisy preserved in crystal resin with hand-finished brass keyring.",
+        "image_url": "https://images.unsplash.com/photo-1725826474457-d4dc3d6d8abf?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHxfHxoYW5kbWFkZSUyMHJlc2luJTIwa2V5Y2hhaW4lMjBqZXdlbHJ5JTIwYWVzdGhldGljJTIwY3JhZnR8ZW58MHx8fHwxNzkyNTE5MjQyfDA&ixlib=rb-4.1.0&q=85",
+        "featured": true,
+        "stock": 25,
+        "availability": true
+      },
+      {
+        "id": "prod-5",
+        "name": "Ornate Floral Resin Tag",
+        "category": "keychains",
+        "price": 480,
+        "description": "Intricate delicate dried flower composite sealed with ultra-clear UV resistant resin.",
+        "image_url": "https://images.unsplash.com/photo-1741980983723-09c2051e8b1e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwzfHxoYW5kbWFkZSUyMHJlc2luJTIwa2V5Y2hhaW4lMjBqZXdlbHJ5JTIwYWVzdGhldGljJTIwY3JhZnR8ZW58MHx8fHwxNzkyNTE5MjQyfDA&ixlib=rb-4.1.0&q=85",
+        "featured": false,
+        "stock": 18,
+        "availability": true
+      },
+      {
+        "id": "prod-6",
+        "name": "Golden Leaf Botanical Print (A4)",
+        "category": "art-prints",
+        "price": 650,
+        "description": "Giclée print on 300gsm textured archival cotton paper featuring minimalist botanical shadows.",
+        "image_url": "https://images.pexels.com/photos/1871809/pexels-photo-1871809.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "featured": true,
+        "stock": 30,
+        "availability": true
+      },
+      {
+        "id": "prod-7",
+        "name": "Continuous Line Art Gallery Print",
+        "category": "art-prints",
+        "price": 750,
+        "description": "Modern minimalist continuous line art portrait print, museum-grade matte finish.",
+        "image_url": "https://images.pexels.com/photos/11774231/pexels-photo-11774231.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "featured": false,
+        "stock": 15,
+        "availability": true
+      },
+      {
+        "id": "prod-8",
+        "name": "Sunburst Resin Floral Pendant",
+        "category": "jewellery",
+        "price": 1150,
+        "description": "Artisanal resin pendant containing natural yellow dried petals on an 18k gold-plated chain.",
+        "image_url": "https://images.pexels.com/photos/17225166/pexels-photo-17225166.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "featured": true,
+        "stock": 6,
+        "availability": true
+      }
+    ],
+    "empty_cart_illustration_direction": "Minimalist terracotta line-art outline of a ceramic cup with a small pressed leaf, titled 'Your studio basket is currently empty.'"
+  },
+  "key_features_and_flows": {
+    "storefront_experience": {
+      "hero_section": "Split hero layout. Left panel has masked text reveal ('Little things, made with love.'), soft CTA button, brand story intro. Right panel features high-res studio hero image inside clipped rounded frame.",
+      "dynamic_collections": "Filterable section chips on shop & homepage with immediate reactive rendering",
+      "shopping_cart_drawer": "Slide-over drawer with quantity adjustments (+ / - / delete), subtotals calculated in INR (₹), and direct CTA: 'Generate Instagram Order Message'",
+      "instagram_enquiry_page": "Curated order draft preview displaying structured items list, total INR, buyer note input, copyable pre-formatted text block, and direct link button opening Instagram (@bless_to_art)"
+    },
+    "admin_dashboard_experience": {
+      "two_panel_layout": "Left sidebar for Collection Sections management (Create/Edit/Delete sections), main grid for Products CRUD (Name, Description, Image URL preview/upload, Price INR, Stock, Category, Featured toggle)",
+      "prototype_login_banner": "Clear disclaimer banner at top: 'Owner Admin Mode (Prototype Demo)' with quick toggle access"
+    }
+  },
+  "data_testid_convention": {
+    "rules": "All interactive buttons, links, search inputs, quantity toggles, cart triggers, and CRUD actions must specify kebab-case data-testid attributes.",
+    "examples": [
+      "data-testid='nav-link-shop'",
+      "data-testid='cart-drawer-trigger'",
+      "data-testid='add-to-cart-button'",
+      "data-testid='copy-instagram-message-button'",
+      "data-testid='open-instagram-button'",
+      "data-testid='admin-add-product-button'",
+      "data-testid='admin-product-edit-prod-1'"
+    ]
+  },
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": [
+    "You tend to converge toward generic outputs. Avoid this: make creative, distinctive frontends that surprise and delight.",
+    "Dark colors look good when used independently without gradients. DO NOT use dark colors as gradients.",
+    "Don't make generic centered layouts, simplistic gradients, and uniform styling.",
+    "Create depth through layered design elements with z-index hierarchy.",
+    "Use glass-morphism effects with backdrop filters (12-24px blur).",
+    "You MUST NOT apply universal transition (e.g. transition: all). This breaks transforms. Always add transitions for specific interactive elements.",
+    "You MUST NOT center align the app container (.App { text-align: center; }). Keep natural reading flow.",
+    "Always use modern button styles like pill-shaped, or sharp button with interaction animations & color relevant to the app style.",
+    "NEVER use AI assistant Emoji characters (like 🤖, 🧠, 💭, 💡) for icons. Use Lucide or Heroicons.",
+    "Every interaction needs micro-animations - hover states, transitions, parallax effects, and entrance animations.",
+    "Use 2-3x more spacing than feels comfortable.",
+    "All interactive and key informational elements MUST include a data-testid attribute.",
+    "Since .js files are used (not .tsx), ensure all components use proper React JSX syntax."
+  ]
+}
