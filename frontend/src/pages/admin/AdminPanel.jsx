@@ -256,9 +256,6 @@ const AdminPanel = ({ onLogout }) => {
             </button>
           </div>
         </div>
-        <p className="border-t border-blush/60 bg-blush/25 py-1.5 text-center text-[11px] text-taupe" data-testid="admin-simulated-banner">
-          Prototype demo — admin sign-in is simulated and not production security. Catalogue data is stored in a real database.
-        </p>
       </header>
 
       <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-8 px-4 py-8 sm:px-8 lg:grid-cols-12">
@@ -745,7 +742,7 @@ const AdminPanel = ({ onLogout }) => {
 
       {/* Story copy dialog */}
       <Dialog open={!!contentDialog} onOpenChange={(o) => !o && setContentDialog(null)}>
-        <DialogContent className="bg-ivory sm:max-w-lg" data-testid="admin-story-dialog">
+        <DialogContent className="max-h-[88vh] overflow-y-auto bg-ivory sm:max-w-lg" data-testid="admin-story-dialog">
           <DialogHeader>
             <DialogTitle className="font-serif text-2xl text-charcoal">Store story copy</DialogTitle>
           </DialogHeader>

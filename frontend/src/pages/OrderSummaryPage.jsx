@@ -119,7 +119,7 @@ Thank you!`;
         </div>
         <p className="mt-3 text-xs leading-relaxed text-taupe">
           Delivery charges are not included. This is an order enquiry, not a confirmed purchase —
-          final availability and pricing are confirmed by the seller on Instagram.
+          final availability and pricing are confirmed on Instagram.
         </p>
       </FadeUp>
 

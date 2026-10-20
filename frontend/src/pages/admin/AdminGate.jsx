@@ -93,10 +93,6 @@ const AdminGate = () => {
             </button>
           </form>
         </div>
-        <p className="mt-4 rounded-2xl border border-blush bg-blush/30 px-4 py-3 text-center text-xs leading-relaxed text-taupe" data-testid="admin-simulated-notice">
-          Prototype demo — this sign-in is simulated for preview purposes and is not
-          production-grade security.
-        </p>
       </div>
     </div>
   );

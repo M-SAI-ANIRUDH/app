@@ -53,8 +53,9 @@ ivory/terracotta palette, editorial serif + clean sans typography, Awwwards-leve
   footer restyled as a dark charcoal band with the white-circle BA logo.
 - Editable homepage story copy: GET /api/content (public) + PUT /api/admin/content (auth),
   MongoDB site_content collection, admin "Story copy" dialog, storefront reads with fallbacks.
-- Story editor expanded: admin "Story copy" dialog now edits homepage story AND About page
-  (heading + 2 paragraphs each); verified round-trip (edit → About page updated → restored).
+- Copy/UX fixes per owner: order-summary note now says "confirmed on Instagram" (no "seller"
+  wording); story dialog capped at 88vh with internal scroll (verified fits 800px-tall screens);
+  prototype/simulated-security labels removed from admin header and login per owner request.
 - Full acceptance QA run: flows A (section create→storefront), B (product create), C (edit
   desc/price/image), D (move between sections, no dupes), E (cart across sections, qty, ₹3,150
   subtotal math), F (enquiry ref + generated message + truthful copy + Instagram link),
