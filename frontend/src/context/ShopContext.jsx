@@ -22,6 +22,7 @@ const newOrderRef = () => {
 export const ShopProvider = ({ children }) => {
   const [sections, setSections] = useState([]);
   const [products, setProducts] = useState([]);
+  const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [cart, setCart] = useState(loadCart);
   const [cartOpen, setCartOpen] = useState(false);
@@ -29,9 +30,14 @@ export const ShopProvider = ({ children }) => {
 
   const refreshCatalogue = useCallback(async () => {
     try {
-      const [s, p] = await Promise.all([api.get("/sections"), api.get("/products")]);
+      const [s, p, c] = await Promise.all([
+        api.get("/sections"),
+        api.get("/products"),
+        api.get("/content"),
+      ]);
       setSections(s.data);
       setProducts(p.data);
+      setContent(c.data);
     } catch (e) {
       console.error("catalogue load failed", e);
     } finally {
@@ -82,29 +88,26 @@ export const ShopProvider = ({ children }) => {
     return ref;
   }, [orderRef]);
 
-  const addToCart = useCallback(
-    (product, qty = 1) => {
-      let added = false;
-      let capped = false;
-      setCart((prev) => {
-        const current = prev[product.id] || 0;
-        let nextQty = current + qty;
-        if (product.stock_quantity != null && nextQty > product.stock_quantity) {
-          nextQty = product.stock_quantity;
-          capped = true;
-        }
-        if (nextQty <= current) return prev;
-        added = true;
-        return { ...prev, [product.id]: nextQty };
-      });
-      if (capped) {
-        toast.info(`Only ${product.stock_quantity} of “${product.name}” available`);
-      } else if (added) {
-        toast.success(`Added “${product.name}” to your basket`);
+  const addToCart = useCallback((product, qty = 1) => {
+    let added = false;
+    let capped = false;
+    setCart((prev) => {
+      const current = prev[product.id] || 0;
+      let nextQty = current + qty;
+      if (product.stock_quantity != null && nextQty > product.stock_quantity) {
+        nextQty = product.stock_quantity;
+        capped = true;
       }
-    },
-    []
-  );
+      if (nextQty <= current) return prev;
+      added = true;
+      return { ...prev, [product.id]: nextQty };
+    });
+    if (capped) {
+      toast.info(`Only ${product.stock_quantity} of “${product.name}” available`);
+    } else if (added) {
+      toast.success(`Added “${product.name}” to your basket`);
+    }
+  }, []);
 
   const setQty = useCallback((product, qty) => {
     setCart((prev) => {
@@ -131,6 +134,7 @@ export const ShopProvider = ({ children }) => {
     sections,
     products,
     productMap,
+    content,
     loading,
     refreshCatalogue,
     cart,

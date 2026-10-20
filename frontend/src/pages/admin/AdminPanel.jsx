@@ -41,6 +41,33 @@ const AdminPanel = ({ onLogout }) => {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef(null);
+  const [contentDialog, setContentDialog] = useState(null);
+
+  const openContent = async () => {
+    try {
+      const { data } = await api.get("/content");
+      setContentDialog(data);
+    } catch (e) {
+      toast.error("Could not load story copy.");
+    }
+  };
+
+  const saveContent = async () => {
+    setSaving(true);
+    try {
+      await api.put("/admin/content", {
+        story_heading: contentDialog.story_heading,
+        story_p1: contentDialog.story_p1,
+        story_p2: contentDialog.story_p2,
+      });
+      toast.success("Story copy updated — it now shows on the homepage.");
+      setContentDialog(null);
+    } catch (e) {
+      toast.error(formatApiError(e));
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const refresh = useCallback(async () => {
     try {
@@ -210,6 +237,13 @@ const AdminPanel = ({ onLogout }) => {
             >
               <ExternalLink className="h-4 w-4" /> View store
             </Link>
+            <button
+              onClick={openContent}
+              data-testid="admin-edit-story-button"
+              className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium text-taupe transition-colors hover:text-terracotta"
+            >
+              <Pencil className="h-4 w-4" /> Story copy
+            </button>
             <button
               onClick={logout}
               data-testid="admin-logout-button"
@@ -700,6 +734,58 @@ const AdminPanel = ({ onLogout }) => {
                 className="w-full rounded-full bg-terracotta py-3 text-sm font-semibold text-ivory transition-colors hover:bg-terracotta-dark disabled:opacity-50"
               >
                 {saving ? "Saving…" : productDialog.mode === "add" ? "Add product" : "Save changes"}
+              </button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Story copy dialog */}
+      <Dialog open={!!contentDialog} onOpenChange={(o) => !o && setContentDialog(null)}>
+        <DialogContent className="bg-ivory sm:max-w-lg" data-testid="admin-story-dialog">
+          <DialogHeader>
+            <DialogTitle className="font-serif text-2xl text-charcoal">Homepage story copy</DialogTitle>
+          </DialogHeader>
+          {contentDialog && (
+            <div className="space-y-4">
+              <p className="text-xs leading-relaxed text-taupe">
+                This text appears in the “Our story” section on the homepage. Changes appear in the
+                store as soon as you save.
+              </p>
+              <Field label="Heading">
+                <input
+                  value={contentDialog.story_heading}
+                  onChange={(e) => setContentDialog((p) => ({ ...p, story_heading: e.target.value }))}
+                  data-testid="story-form-heading"
+                  className={inputCls}
+                  aria-label="Story heading"
+                />
+              </Field>
+              <Field label="Paragraph 1">
+                <textarea
+                  value={contentDialog.story_p1}
+                  onChange={(e) => setContentDialog((p) => ({ ...p, story_p1: e.target.value }))}
+                  data-testid="story-form-p1"
+                  className={`${inputCls} h-24 resize-none`}
+                  aria-label="Story paragraph one"
+                />
+              </Field>
+              <Field label="Paragraph 2">
+                <textarea
+                  value={contentDialog.story_p2}
+                  onChange={(e) => setContentDialog((p) => ({ ...p, story_p2: e.target.value }))}
+                  data-testid="story-form-p2"
+                  className={`${inputCls} h-24 resize-none`}
+                  aria-label="Story paragraph two"
+                />
+              </Field>
+              <button
+                onClick={saveContent}
+                disabled={saving}
+                data-testid="story-form-save"
+                className="w-full rounded-full bg-terracotta py-3 text-sm font-semibold text-ivory transition-colors hover:bg-terracotta-dark disabled:opacity-50"
+              >
+                {saving ? "Saving…" : "Save story copy"}
               </button>
             </div>
           )}

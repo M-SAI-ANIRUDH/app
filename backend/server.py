@@ -263,6 +263,32 @@ async def delete_product(product_id: str, token: str = Depends(require_admin)):
     return {"ok": True}
 
 
+# ---------- Editable site content ----------
+DEFAULT_CONTENT = {
+    "story_heading": "The joy of small things, made slowly.",
+    "story_p1": "Bless to Art is a small creative studio celebrating handmade craft — the quiet pleasure of a candle lit at dusk, a keepsake carried every day, a print that makes a wall feel like home.",
+    "story_p2": "Every piece is made in small batches with natural materials and thoughtful details, created to be gifted, kept, and loved for a long time.",
+}
+
+
+@api_router.get("/content")
+async def get_content():
+    doc = await db.site_content.find_one({"id": "main"}, {"_id": 0})
+    data = dict(DEFAULT_CONTENT)
+    if doc:
+        data.update({k: v for k, v in doc.get("values", {}).items() if k in DEFAULT_CONTENT})
+    return data
+
+
+@api_router.put("/admin/content")
+async def update_content(payload: dict, token: str = Depends(require_admin)):
+    values = {k: str(v) for k, v in (payload or {}).items() if k in DEFAULT_CONTENT}
+    await db.site_content.update_one(
+        {"id": "main"}, {"$set": {"values": values, "updated_at": now_iso()}}, upsert=True
+    )
+    return await get_content()
+
+
 # ---------- Uploads ----------
 ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
 MAX_UPLOAD_BYTES = 8 * 1024 * 1024

@@ -48,6 +48,19 @@ ivory/terracotta palette, editorial serif + clean sans typography, Awwwards-leve
 - No payments, no customer accounts, no automated Instagram messaging (by design).
 - Cart persists per-browser only (localStorage). Catalogue persists in MongoDB.
 
+## Implemented (2026-10-20, later same day)
+- Logo-on-dark: charcoal-circle BA variant (logo_charcoal.png) on the Instagram section;
+  footer restyled as a dark charcoal band with the white-circle BA logo.
+- Editable homepage story copy: GET /api/content (public) + PUT /api/admin/content (auth),
+  MongoDB site_content collection, admin "Story copy" dialog, storefront reads with fallbacks.
+- StorefrontLayout refetches catalogue+content on mount, so admin edits appear without reload.
+- Full acceptance QA run: flows A (section create→storefront), B (product create), C (edit
+  desc/price/image), D (move between sections, no dupes), E (cart across sections, qty, ₹3,150
+  subtotal math), F (enquiry ref + generated message + truthful copy + Instagram link),
+  G (409 on populated section delete without choice, product delete→404, safe cleanup),
+  H (no horizontal overflow at 375px). Upload pipeline verified (upload→/api/files 200).
+  All QA artifacts cleaned up; story heading restored to default.
+
 ## Backlog
 - P0: none blocking.
 - P1: full visual QA pass at 390/768/1280/1440; owner-editable brand story copy; per-section

@@ -13,14 +13,23 @@ const HERO_IMAGE =
 const STORY_IMAGE =
   "https://images.pexels.com/photos/9736672/pexels-photo-9736672.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940";
 
+const DEFAULT_STORY = {
+  story_heading: "The joy of small things, made slowly.",
+  story_p1:
+    "Bless to Art is a small creative studio celebrating handmade craft — the quiet pleasure of a candle lit at dusk, a keepsake carried every day, a print that makes a wall feel like home.",
+  story_p2:
+    "Every piece is made in small batches with natural materials and thoughtful details, created to be gifted, kept, and loved for a long time.",
+};
+
 const HomePage = () => {
-  const { sections, products } = useShop();
+  const { sections, products, content } = useShop();
   const navigate = useNavigate();
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "12%"]);
 
   const featured = products.filter((p) => p.is_featured && p.is_available).slice(0, 6);
+  const story = { ...DEFAULT_STORY, ...(content || {}) };
 
   const sectionImage = (section) => {
     const p = products.find((pr) => pr.section_id === section.id && pr.image_url);
@@ -167,7 +176,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Brand story */}
+      {/* Brand story — copy is editable from the admin dashboard */}
       <section className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-4 py-20 sm:px-8 md:grid-cols-2 lg:px-16 lg:py-32" data-testid="brand-story-section">
         <FadeUp className="order-2 md:order-1">
           <div className="overflow-hidden rounded-3xl">
@@ -182,17 +191,14 @@ const HomePage = () => {
         <div className="order-1 md:order-2">
           <FadeUp>
             <p className="text-xs font-medium uppercase tracking-[0.25em] text-terracotta">Our story</p>
-            <h2 className="mt-3 font-serif text-3xl leading-snug tracking-tight text-charcoal sm:text-4xl">
-              The joy of small things, made slowly.
+            <h2 className="mt-3 font-serif text-3xl leading-snug tracking-tight text-charcoal sm:text-4xl" data-testid="brand-story-heading">
+              {story.story_heading}
             </h2>
-            <p className="mt-6 text-base leading-relaxed text-taupe">
-              Bless to Art is a small creative studio celebrating handmade craft — the quiet
-              pleasure of a candle lit at dusk, a keepsake carried every day, a print that makes a
-              wall feel like home.
+            <p className="mt-6 text-base leading-relaxed text-taupe" data-testid="brand-story-p1">
+              {story.story_p1}
             </p>
-            <p className="mt-4 text-base leading-relaxed text-taupe">
-              Every piece is made in small batches with natural materials and thoughtful details,
-              created to be gifted, kept, and loved for a long time.
+            <p className="mt-4 text-base leading-relaxed text-taupe" data-testid="brand-story-p2">
+              {story.story_p2}
             </p>
             <Link
               to="/about"
@@ -209,8 +215,13 @@ const HomePage = () => {
       <section className="bg-blush/40 py-20 lg:py-24" data-testid="instagram-section">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-8">
           <FadeUp>
-            <Instagram className="mx-auto h-8 w-8 text-terracotta" />
-            <h2 className="mt-5 font-serif text-3xl tracking-tight text-charcoal sm:text-4xl">
+            <img
+              src="/logo_charcoal.png"
+              alt="bless to art. monogram"
+              className="mx-auto h-20 w-20 rounded-full shadow-[0_14px_30px_-12px_rgba(57,46,40,0.4)]"
+              data-testid="instagram-section-logo"
+            />
+            <h2 className="mt-6 font-serif text-3xl tracking-tight text-charcoal sm:text-4xl">
               Follow the studio on Instagram.
             </h2>
             <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-taupe">

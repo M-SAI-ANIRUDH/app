@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { BrowserRouter, Link, Outlet, Route, Routes, useLocation } from "react-router-dom";
 import Lenis from "lenis";
 import { Toaster } from "./components/ui/sonner";
-import { ShopProvider } from "./context/ShopContext";
+import { ShopProvider, useShop } from "./context/ShopContext";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import { CartDrawer } from "./components/CartDrawer";
@@ -37,16 +37,24 @@ const ScrollToTop = () => {
   return null;
 };
 
-const StorefrontLayout = () => (
-  <div className="min-h-screen">
-    <Navbar />
-    <main>
-      <Outlet />
-    </main>
-    <Footer />
-    <CartDrawer />
-  </div>
-);
+const StorefrontLayout = () => {
+  const { refreshCatalogue } = useShop();
+  // Refetch whenever the storefront mounts, so admin edits show up without a reload
+  useEffect(() => {
+    refreshCatalogue();
+  }, [refreshCatalogue]);
+
+  return (
+    <div className="min-h-screen">
+      <Navbar />
+      <main>
+        <Outlet />
+      </main>
+      <Footer />
+      <CartDrawer />
+    </div>
+  );
+};
 
 const NotFound = () => (
   <div className="flex min-h-[70vh] flex-col items-center justify-center gap-5 px-4 pt-16 text-center" data-testid="not-found-page">
