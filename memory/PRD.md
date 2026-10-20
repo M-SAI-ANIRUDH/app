@@ -53,7 +53,8 @@ ivory/terracotta palette, editorial serif + clean sans typography, Awwwards-leve
   footer restyled as a dark charcoal band with the white-circle BA logo.
 - Editable homepage story copy: GET /api/content (public) + PUT /api/admin/content (auth),
   MongoDB site_content collection, admin "Story copy" dialog, storefront reads with fallbacks.
-- StorefrontLayout refetches catalogue+content on mount, so admin edits appear without reload.
+- Story editor expanded: admin "Story copy" dialog now edits homepage story AND About page
+  (heading + 2 paragraphs each); verified round-trip (edit → About page updated → restored).
 - Full acceptance QA run: flows A (section create→storefront), B (product create), C (edit
   desc/price/image), D (move between sections, no dupes), E (cart across sections, qty, ₹3,150
   subtotal math), F (enquiry ref + generated message + truthful copy + Instagram link),

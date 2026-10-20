@@ -59,6 +59,9 @@ const AdminPanel = ({ onLogout }) => {
         story_heading: contentDialog.story_heading,
         story_p1: contentDialog.story_p1,
         story_p2: contentDialog.story_p2,
+        about_heading: contentDialog.about_heading,
+        about_p1: contentDialog.about_p1,
+        about_p2: contentDialog.about_p2,
       });
       toast.success("Story copy updated — it now shows on the homepage.");
       setContentDialog(null);
@@ -744,13 +747,13 @@ const AdminPanel = ({ onLogout }) => {
       <Dialog open={!!contentDialog} onOpenChange={(o) => !o && setContentDialog(null)}>
         <DialogContent className="bg-ivory sm:max-w-lg" data-testid="admin-story-dialog">
           <DialogHeader>
-            <DialogTitle className="font-serif text-2xl text-charcoal">Homepage story copy</DialogTitle>
+            <DialogTitle className="font-serif text-2xl text-charcoal">Store story copy</DialogTitle>
           </DialogHeader>
           {contentDialog && (
             <div className="space-y-4">
               <p className="text-xs leading-relaxed text-taupe">
-                This text appears in the “Our story” section on the homepage. Changes appear in the
-                store as soon as you save.
+                The first group appears in the “Our story” section on the homepage; the second group
+                is the About page. Changes appear in the store as soon as you save.
               </p>
               <Field label="Heading">
                 <input
@@ -777,6 +780,36 @@ const AdminPanel = ({ onLogout }) => {
                   data-testid="story-form-p2"
                   className={`${inputCls} h-24 resize-none`}
                   aria-label="Story paragraph two"
+                />
+              </Field>
+              <p className="pt-2 text-xs font-semibold uppercase tracking-[0.2em] text-terracotta">
+                About page
+              </p>
+              <Field label="About heading">
+                <input
+                  value={contentDialog.about_heading || ""}
+                  onChange={(e) => setContentDialog((p) => ({ ...p, about_heading: e.target.value }))}
+                  data-testid="story-form-about-heading"
+                  className={inputCls}
+                  aria-label="About page heading"
+                />
+              </Field>
+              <Field label="About paragraph 1">
+                <textarea
+                  value={contentDialog.about_p1 || ""}
+                  onChange={(e) => setContentDialog((p) => ({ ...p, about_p1: e.target.value }))}
+                  data-testid="story-form-about-p1"
+                  className={`${inputCls} h-24 resize-none`}
+                  aria-label="About page paragraph one"
+                />
+              </Field>
+              <Field label="About paragraph 2">
+                <textarea
+                  value={contentDialog.about_p2 || ""}
+                  onChange={(e) => setContentDialog((p) => ({ ...p, about_p2: e.target.value }))}
+                  data-testid="story-form-about-p2"
+                  className={`${inputCls} h-24 resize-none`}
+                  aria-label="About page paragraph two"
                 />
               </Field>
               <button

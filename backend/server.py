@@ -268,6 +268,9 @@ DEFAULT_CONTENT = {
     "story_heading": "The joy of small things, made slowly.",
     "story_p1": "Bless to Art is a small creative studio celebrating handmade craft — the quiet pleasure of a candle lit at dusk, a keepsake carried every day, a print that makes a wall feel like home.",
     "story_p2": "Every piece is made in small batches with natural materials and thoughtful details, created to be gifted, kept, and loved for a long time.",
+    "about_heading": "A small studio with a soft spot for little things.",
+    "about_p1": "Bless to Art began with a simple belief: the objects we keep close should carry warmth. This is a creative studio page — the story here is a placeholder, ready for the owner's own words about how the brand began.",
+    "about_p2": "What never changes is the making: slow, careful, and personal. Each piece is finished by hand and packed with care before it finds its way to you.",
 }
 
 
