@@ -56,7 +56,7 @@ const AdminGate = () => {
       <div className="w-full max-w-sm">
         <div className="rounded-3xl border border-sand bg-white p-8 shadow-[0_20px_50px_-25px_rgba(57,46,40,0.25)]">
           <div className="flex items-center gap-2.5">
-            <FlowerMark className="h-8 w-8" />
+            <FlowerMark className="h-12 w-12" />
             <span className="font-serif text-2xl font-medium text-charcoal">bless to art.</span>
           </div>
           <h1 className="mt-6 font-serif text-2xl text-charcoal">Owner access</h1>

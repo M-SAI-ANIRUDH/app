@@ -20,7 +20,7 @@ export const Navbar = () => {
     <header className="fixed inset-x-0 top-0 z-40 border-b border-sand/60 bg-ivory/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-8 lg:px-16">
         <Link to="/" data-testid="nav-logo" className="flex items-center gap-2.5">
-          <FlowerMark className="h-7 w-7" />
+          <FlowerMark className="h-10 w-10" />
           <span className="font-serif text-2xl font-medium tracking-tight text-charcoal">
             bless to art.
           </span>
@@ -91,7 +91,7 @@ export const Navbar = () => {
             </SheetTrigger>
             <SheetContent side="left" className="w-72 bg-ivory">
               <SheetTitle className="flex items-center gap-2 font-serif text-xl text-charcoal">
-                <FlowerMark className="h-6 w-6" /> bless to art.
+                <FlowerMark className="h-9 w-9" /> bless to art.
               </SheetTitle>
               <nav className="mt-10 flex flex-col gap-2" aria-label="Mobile navigation">
                 {NAV_LINKS.map((l) => (

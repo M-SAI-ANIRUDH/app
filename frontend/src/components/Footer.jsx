@@ -10,7 +10,7 @@ export const Footer = () => {
       <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-8 md:grid-cols-3 lg:px-16">
         <div>
           <div className="flex items-center gap-2.5">
-            <FlowerMark className="h-7 w-7" />
+            <FlowerMark className="h-10 w-10" />
             <span className="font-serif text-2xl font-medium text-charcoal">bless to art.</span>
           </div>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-taupe">

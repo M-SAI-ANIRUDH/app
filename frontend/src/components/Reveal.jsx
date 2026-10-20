@@ -28,14 +28,9 @@ export const FadeUp = ({ children, delay = 0, className = "", once = true }) => 
 );
 
 export const FlowerMark = ({ className = "h-7 w-7" }) => (
-  <svg viewBox="0 0 64 64" className={className} aria-hidden="true">
-    <g fill="#B8745B">
-      <circle cx="32" cy="19" r="8" />
-      <circle cx="43.4" cy="27.3" r="8" />
-      <circle cx="39" cy="40.7" r="8" />
-      <circle cx="25" cy="40.7" r="8" />
-      <circle cx="20.6" cy="27.3" r="8" />
-    </g>
-    <circle cx="32" cy="31" r="5.5" fill="#E8CFC5" />
-  </svg>
+  <img
+    src="/logo.png"
+    alt="bless to art. logo"
+    className={`${className} rounded-full object-cover`}
+  />
 );

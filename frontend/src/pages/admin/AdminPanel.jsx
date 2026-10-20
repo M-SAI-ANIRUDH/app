@@ -198,7 +198,7 @@ const AdminPanel = ({ onLogout }) => {
       <header className="sticky top-0 z-30 border-b border-sand bg-ivory/90 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-4 sm:px-8">
           <div className="flex items-center gap-2.5">
-            <FlowerMark className="h-6 w-6" />
+            <FlowerMark className="h-9 w-9" />
             <span className="font-serif text-xl font-medium text-charcoal">bless to art.</span>
             <span className="rounded-full bg-blush/60 px-3 py-1 text-xs font-medium text-charcoal">Studio admin</span>
           </div>
