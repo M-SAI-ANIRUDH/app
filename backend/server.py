@@ -5,6 +5,7 @@ ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / ".env")
 
 import logging
+import mimetypes
 import os
 import re
 import secrets
@@ -12,7 +13,6 @@ import uuid
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
-import requests
 from fastapi import APIRouter, Depends, FastAPI, File, Header, HTTPException, Response, UploadFile
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel, Field
@@ -26,41 +26,32 @@ app = FastAPI()
 api_router = APIRouter(prefix="/api")
 logger = logging.getLogger("blesstoart")
 
-# ---------- Object storage (swap for S3 in production) ----------
-STORAGE_BASE = (os.environ.get("INTEGRATION_PROXY_URL") or "").strip() or "https://integrations.emergentagent.com"
-STORAGE_URL = STORAGE_BASE.rstrip("/") + "/objstore/api/v1/storage"
-EMERGENT_KEY = os.environ.get("EMERGENT_LLM_KEY")
+# ---------- Local file storage (replace with an object store in production) ----------
 APP_NAME = "bless-to-art"
-storage_key = None
+LOCAL_UPLOADS_DIR = ROOT_DIR / "uploads"
 
 
-def init_storage(force: bool = False):
-    global storage_key
-    if storage_key and not force:
-        return storage_key
-    resp = requests.post(f"{STORAGE_URL}/init", json={"emergent_key": EMERGENT_KEY}, timeout=30)
-    resp.raise_for_status()
-    storage_key = resp.json()["storage_key"]
-    return storage_key
+def local_upload_path(storage_path: str) -> Path:
+    """Resolve a stored relative path without allowing access outside uploads/."""
+    root = LOCAL_UPLOADS_DIR.resolve()
+    candidate = (root / storage_path).resolve()
+    try:
+        candidate.relative_to(root)
+    except ValueError as exc:
+        raise ValueError("Invalid upload path") from exc
+    return candidate
 
 
 def put_object(path: str, data: bytes, content_type: str) -> dict:
-    key = init_storage()
-    resp = requests.put(
-        f"{STORAGE_URL}/objects/{path}",
-        headers={"X-Storage-Key": key, "Content-Type": content_type},
-        data=data,
-        timeout=120,
-    )
-    resp.raise_for_status()
-    return resp.json()
+    destination = local_upload_path(path)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_bytes(data)
+    return {"path": path, "size": len(data)}
 
 
 def get_object(path: str):
-    key = init_storage()
-    resp = requests.get(f"{STORAGE_URL}/objects/{path}", headers={"X-Storage-Key": key}, timeout=60)
-    resp.raise_for_status()
-    return resp.content, resp.headers.get("Content-Type", "application/octet-stream")
+    source = local_upload_path(path)
+    return source.read_bytes(), mimetypes.guess_type(source.name)[0] or "application/octet-stream"
 
 
 def now_iso():
@@ -294,20 +285,27 @@ async def update_content(payload: dict, token: str = Depends(require_admin)):
 
 # ---------- Uploads ----------
 ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
+IMAGE_EXTENSIONS = {
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "image/webp": "webp",
+    "image/gif": "gif",
+}
 MAX_UPLOAD_BYTES = 8 * 1024 * 1024
 
 
 @api_router.post("/uploads", status_code=201)
 async def upload_image(file: UploadFile = File(...), token: str = Depends(require_admin)):
-    if not file.content_type or not file.content_type.startswith("image/"):
-        raise HTTPException(status_code=400, detail="Only image files are allowed")
+    if file.content_type not in ALLOWED_IMAGE_TYPES:
+        raise HTTPException(status_code=400, detail="Use a JPG, PNG, WebP, or GIF image")
     data = await file.read()
     if len(data) == 0:
         raise HTTPException(status_code=400, detail="Empty file")
     if len(data) > MAX_UPLOAD_BYTES:
         raise HTTPException(status_code=400, detail="Image must be under 8 MB")
-    ext = file.filename.rsplit(".", 1)[-1].lower() if "." in file.filename else "bin"
-    path = f"{APP_NAME}/uploads/{uuid.uuid4()}.{ext}"
+    filename = file.filename or "upload"
+    ext = IMAGE_EXTENSIONS[file.content_type]
+    path = f"{APP_NAME}/{uuid.uuid4()}.{ext}"
     try:
         result = put_object(path, data, file.content_type)
     except Exception as e:
@@ -317,7 +315,7 @@ async def upload_image(file: UploadFile = File(...), token: str = Depends(requir
         {
             "id": str(uuid.uuid4()),
             "storage_path": result["path"],
-            "original_filename": file.filename,
+            "original_filename": filename,
             "content_type": file.content_type,
             "size": result.get("size", len(data)),
             "is_deleted": False,
@@ -331,12 +329,8 @@ async def upload_image(file: UploadFile = File(...), token: str = Depends(requir
 async def serve_file(path: str):
     try:
         data, content_type = get_object(path)
-    except Exception:
-        try:
-            init_storage(force=True)
-            data, content_type = get_object(path)
-        except Exception:
-            raise HTTPException(status_code=404, detail="File not found")
+    except (FileNotFoundError, ValueError):
+        raise HTTPException(status_code=404, detail="File not found")
     return Response(content=data, media_type=content_type, headers={"Cache-Control": "public, max-age=86400"})
 
 
@@ -396,20 +390,31 @@ async def seed_catalogue():
 
 @app.on_event("startup")
 async def startup():
-    try:
-        init_storage()
-        logger.info("Object storage initialised")
-    except Exception as e:
-        logger.error(f"Storage init failed (uploads will retry later): {e}")
+    LOCAL_UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+    logger.info("Local upload storage initialised at %s", LOCAL_UPLOADS_DIR)
     await seed_catalogue()
 
 
 app.include_router(api_router)
 
+DEFAULT_CORS_ORIGINS = ",".join(
+    [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:4200",
+        "http://127.0.0.1:4200",
+    ]
+)
+cors_origins = [
+    origin.strip()
+    for origin in os.environ.get("CORS_ORIGINS", DEFAULT_CORS_ORIGINS).split(",")
+    if origin.strip()
+]
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=os.environ.get("CORS_ORIGINS", "*").split(","),
+    allow_origins=cors_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
