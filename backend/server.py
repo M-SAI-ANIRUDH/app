@@ -13,9 +13,12 @@ import uuid
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
+import boto3
+from botocore.exceptions import ClientError
 from fastapi import APIRouter, Depends, FastAPI, File, Header, HTTPException, Response, UploadFile
 from motor.motor_asyncio import AsyncIOMotorClient
 from pydantic import BaseModel, Field
+from starlette.concurrency import run_in_threadpool
 from starlette.middleware.cors import CORSMiddleware
 
 mongo_url = os.environ["MONGO_URL"]
@@ -26,9 +29,12 @@ app = FastAPI()
 api_router = APIRouter(prefix="/api")
 logger = logging.getLogger("blesstoart")
 
-# ---------- Local file storage (replace with an object store in production) ----------
+# ---------- Image storage ----------
 APP_NAME = "bless-to-art"
 LOCAL_UPLOADS_DIR = ROOT_DIR / "uploads"
+IMAGE_STORAGE = os.environ.get("IMAGE_STORAGE", "local").strip().lower()
+AWS_REGION = os.environ.get("AWS_REGION", "ap-south-1")
+AWS_S3_BUCKET = os.environ.get("AWS_S3_BUCKET", "").strip()
 
 
 def local_upload_path(storage_path: str) -> Path:
@@ -42,7 +48,23 @@ def local_upload_path(storage_path: str) -> Path:
     return candidate
 
 
+def s3_client():
+    if not AWS_S3_BUCKET:
+        raise RuntimeError("AWS_S3_BUCKET must be set when IMAGE_STORAGE=s3")
+    return boto3.client("s3", region_name=AWS_REGION)
+
+
 def put_object(path: str, data: bytes, content_type: str) -> dict:
+    if IMAGE_STORAGE == "s3":
+        s3_client().put_object(
+            Bucket=AWS_S3_BUCKET,
+            Key=path,
+            Body=data,
+            ContentType=content_type,
+            ServerSideEncryption="AES256",
+        )
+        return {"path": path, "size": len(data)}
+
     destination = local_upload_path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_bytes(data)
@@ -50,6 +72,16 @@ def put_object(path: str, data: bytes, content_type: str) -> dict:
 
 
 def get_object(path: str):
+    if IMAGE_STORAGE == "s3":
+        try:
+            result = s3_client().get_object(Bucket=AWS_S3_BUCKET, Key=path)
+        except ClientError as exc:
+            code = exc.response.get("Error", {}).get("Code", "")
+            if code in {"404", "NoSuchKey", "NoSuchBucket"}:
+                raise FileNotFoundError(path) from exc
+            raise
+        return result["Body"].read(), result.get("ContentType", "application/octet-stream")
+
     source = local_upload_path(path)
     return source.read_bytes(), mimetypes.guess_type(source.name)[0] or "application/octet-stream"
 
@@ -305,9 +337,9 @@ async def upload_image(file: UploadFile = File(...), token: str = Depends(requir
         raise HTTPException(status_code=400, detail="Image must be under 8 MB")
     filename = file.filename or "upload"
     ext = IMAGE_EXTENSIONS[file.content_type]
-    path = f"{APP_NAME}/{uuid.uuid4()}.{ext}"
+    path = f"product-images/{APP_NAME}/{uuid.uuid4()}.{ext}"
     try:
-        result = put_object(path, data, file.content_type)
+        result = await run_in_threadpool(put_object, path, data, file.content_type)
     except Exception as e:
         logger.error(f"Upload failed: {e}")
         raise HTTPException(status_code=502, detail="Upload failed. Please try again.")
@@ -328,7 +360,7 @@ async def upload_image(file: UploadFile = File(...), token: str = Depends(requir
 @api_router.get("/files/{path:path}")
 async def serve_file(path: str):
     try:
-        data, content_type = get_object(path)
+        data, content_type = await run_in_threadpool(get_object, path)
     except (FileNotFoundError, ValueError):
         raise HTTPException(status_code=404, detail="File not found")
     return Response(content=data, media_type=content_type, headers={"Cache-Control": "public, max-age=86400"})
@@ -390,8 +422,15 @@ async def seed_catalogue():
 
 @app.on_event("startup")
 async def startup():
-    LOCAL_UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
-    logger.info("Local upload storage initialised at %s", LOCAL_UPLOADS_DIR)
+    if IMAGE_STORAGE == "local":
+        LOCAL_UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+        logger.info("Local upload storage initialised at %s", LOCAL_UPLOADS_DIR)
+    elif IMAGE_STORAGE == "s3":
+        if not AWS_S3_BUCKET:
+            raise RuntimeError("AWS_S3_BUCKET must be set when IMAGE_STORAGE=s3")
+        logger.info("S3 image storage initialised for bucket %s in %s", AWS_S3_BUCKET, AWS_REGION)
+    else:
+        raise RuntimeError("IMAGE_STORAGE must be either 'local' or 's3'")
     await seed_catalogue()
 
 

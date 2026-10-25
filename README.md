@@ -39,7 +39,7 @@ Prerequisites: Node.js 22+, Python 3.11+, and Docker Desktop.
 
 The storefront runs at http://localhost:4200 and calls the API at http://localhost:8001. The API allows both localhost and 127.0.0.1 on ports 3000 and 4200 by default. Confirm the API at http://localhost:8001/api/.
 
-Images uploaded through Admin are saved locally under `backend/uploads/` and served by the API. That folder is ignored by Git. Before deploying the backend, move uploads to managed object storage; local files on many hosting platforms are temporary and can disappear after a deployment or restart.
+Images uploaded through Admin use the `IMAGE_STORAGE` setting in `backend/.env`. The default `local` option saves files under `backend/uploads/`, which is ignored by Git. To use the private Amazon S3 bucket, set `IMAGE_STORAGE=s3` and configure `AWS_REGION`, `AWS_S3_BUCKET`, `AWS_ACCESS_KEY_ID`, and `AWS_SECRET_ACCESS_KEY`. The frontend continues to load images through the API, so the S3 bucket does not need public access.
 
 ## Database deployment
 
